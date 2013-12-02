@@ -1,0 +1,61 @@
+#ifndef postwhatrep_idl
+#define postwhatrep_idl
+
+#include <postwhat.idl>
+
+interface M_PostWhatRep;
+
+
+interface PostWhatRep : PostWhat
+{
+
+#ifdef __SOMIDL__
+    implementation
+    {
+        local;
+        majorversion                = 1;
+        minorversion                = 1;
+        metaclass                   = M_PostWhatRep;
+        callstyle                   = oidl;
+        filestem                    = pwhatrep;
+        dllname                     = "pwhatrep.dll";
+        somDefaultInit              :init,override;
+        somDestruct                 :override;
+        wpOpen                      :override;
+
+        passthru C_xih_after = ""
+        "#ifdef __cplusplus"
+        "   extern \"C\" {"
+        "#endif"
+        "int _CRT_init(void);"
+        "void _CRT_term(void);"
+        "void __ctordtorInit(void);"
+        "void __ctordtorTerm(void);"
+        "#ifdef __cplusplus"
+        "}"
+        "#endif"
+        "";
+
+    };
+#endif
+};
+
+interface M_PostWhatRep : M_PostWhat
+{
+
+#ifdef __SOMIDL__
+    implementation
+    {
+        local;
+        majorversion                = 1;
+        minorversion                = 1;
+        callstyle                   = oidl;
+        filestem                    = pwhatrep;
+        dllname                     = "pwhatrep.dll";
+        wpclsQueryIconData          :override;
+        wpclsQueryTitle             :override;
+    };
+#endif
+};
+#endif
+

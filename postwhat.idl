@@ -1,0 +1,111 @@
+#ifndef postwhat_idl
+#define postwhat_idl
+
+#include <wpabs.idl>
+
+interface M_PostWhat;
+
+typedef somToken MPARAM;
+typedef somToken PBASEWNDWORDS;
+
+interface PostWhat : WPAbstract
+{
+    attribute PBYTE pNoteData;
+    attribute ULONG ulNoteDataLen;
+
+    VOID wpSubClassWindow(in HWND hwnd,in PFNWP WndProc);
+
+#ifdef __SOMIDL__
+    implementation
+    {
+        releaseorder                :   _get_pNoteData,
+                                        _set_pNoteData,
+                                        _get_ulNoteDataLen,
+                                        _set_ulNoteDataLen,
+                                        wpSubClassWindow;
+        local;
+        majorversion                = 1;
+        minorversion                = 1;
+        metaclass                   = M_PostWhat;
+        callstyle                   = oidl;
+        filestem                    = postwhat;
+        dllname                     = "postwhat.dll";
+        somDefaultInit              :init,override;
+        somDestruct                 :override;
+        wpFilterPopupMenu           :override;
+        wpFree                      :override;
+        wpMenuItemSelected          :override;
+        wpModifyPopupMenu           :override;
+        wpOpen                      :override;
+        wpSaveState                 :override;
+        wpRestoreState              :override;
+
+        passthru C_xh_before = ""
+        "#define INCL_PM"
+        "#define INCL_DOS"
+        "#include <os2.h>"
+        "#define    KEY_NOTEDATA            1"
+        "#define    WM_INIT                 WM_USER"
+        ""
+        "typedef struct _BASEWNDWORDS"
+        "{"
+        "   SOMObject *somSelf;"
+        "   PVOID somThis;"
+        "   PFNWP thisWndProc;"
+        "   PFNWP prevWndProc;"
+        "   struct _BASEWNDWORDS *prevWndWords;"
+        "} BASEWNDWORDS,*PBASEWNDWORDS;"
+        "";
+
+        passthru C_xih_after = ""
+        "#ifdef __cplusplus"
+        "   extern \"C\" {"
+        "#endif"
+        "int _CRT_init(void);"
+        "void _CRT_term(void);"
+        "void __ctordtorInit(void);"
+        "void __ctordtorTerm(void);"
+        "#ifdef __cplusplus"
+        "}"
+        "#endif"
+        "";
+
+    };
+#endif
+};
+
+interface M_PostWhat : M_WPAbstract
+{
+    PBASEWNDWORDS wpclsAllocPerViewData(in HWND hwnd,in ULONG msg,in MPARAM mp1,in MPARAM mp2,in PFNWP WndProc,in PVOID pUserData,in ULONG ulLen);
+    PBASEWNDWORDS wpclsGetPerViewData(in HWND hwnd,in PFNWP WndProc);
+    SOMObject wpclsGetsomSelfFromPerViewData(in PBASEWNDWORDS pBase);
+    PVOID wpclsGetsomThisFromPerViewData(in PBASEWNDWORDS pBase);
+    PVOID wpclsGetUserDataFromPerViewData(in PBASEWNDWORDS pBase);
+    BOOL wpclsFreePerViewData(in HWND hwnd,in PFNWP WndProc);
+    MRESULT wpclsClassDefaultWindowProc(in HWND hwnd,in ULONG msg,in MPARAM mp1,in MPARAM mp2,in PFNWP WndProc);
+
+#ifdef __SOMIDL__
+    implementation
+    {
+        releaseorder                :   wpclsAllocPerViewData,
+                                        wpclsGetPerViewData,
+                                        wpclsGetsomSelfFromPerViewData,
+                                        wpclsGetsomThisFromPerViewData,
+                                        wpclsGetUserDataFromPerViewData,
+                                        wpclsFreePerViewData,
+                                        wpclsClassDefaultWindowProc;
+        local;
+        majorversion                = 1;
+        minorversion                = 1;
+        callstyle                   = oidl;
+        filestem                    = postwhat;
+        dllname                     = "postwhat.dll";
+        wpclsCreateDefaultTemplates :override;
+        wpclsQueryTitle             :override;
+        wpclsQueryDefaultView       :override;
+        wpclsQueryIconData          :override;
+    };
+#endif
+};
+#endif
+

@@ -1,0 +1,6 @@
+#include <os2.h>
+#include <rc.h>
+
+POINTER ID_MAIN LOADONCALL MOVEABLE DISCARDABLE "default.ico"
+
+

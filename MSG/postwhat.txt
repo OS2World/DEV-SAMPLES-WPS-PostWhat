@@ -1,0 +1,17 @@
+PWT
+PWT0001I: A Hardware Exception was raised by OS/2
+PWT0002I: Not applicable
+PWT0003I: File %1,Line %2:Exception caught when exporting data from the MLE
+PWT0004I: File %1,Line %2:Exception caught when persistently saving the object's instance data (wpSaveState)
+PWT0005I: File %1,Line %2:Exception caught when restoring the object's instance data (wpRestoreState)
+PWT0006I: Exception Report Record,ExceptionNum:
+PWT0007I: Exception Report Record,fHandlerFlags:
+PWT0008I: Exception Report Record,ExceptionAddress:
+PWT0009I: Exception Report Record,cParameters:
+PWT0010I: Exception Report Record,ExceptionInfo[0]:
+PWT0011I: Exception Report Record,ExceptionInfo[1]:
+PWT0012I: Exception Report Record,ExceptionInfo[2]:
+PWT0013I: Exception Report Record,ExceptionInfo[3]:
+PWT0014I: File %1,Line %2:Exception caught when importing data into the MLE
+PWT0015I: Exception Report Record,Failing Module:
+

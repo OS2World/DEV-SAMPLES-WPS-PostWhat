@@ -1,0 +1,53 @@
+# makefile
+# Erstellt von IBM WorkFrame/2 MakeMake um 2:58:16 am 13 Juni 2010
+#
+# Diese Make-Datei enth„lt folgende Aktionen:
+#  Compile::SOM Compiler
+#  Compile::C++ Compiler
+#  Link::Linker
+#  Bind::Resource Bind
+#  Compile::Resource Compiler
+#  Misc::DLL with OS2OM30.DLL runtime and replace locked DLL in system directory
+
+!IF [SET SMINCLUDE=..;$(SMINCLUDE)] || [SET INCLUDE=.;..;$(CPPMAIN)\INCLUDE;$(SOMBASE)\INCLUDE;$(SOMBASE:som=H)]
+!ENDIF
+
+.SUFFIXES:
+
+.SUFFIXES: .IDL .RC .cpp .dll .obj .res 
+
+.IDL.cpp:
+	@echo " Compile::SOM Compiler "
+	sc.exe  -C200000 -S200000 -s"xc;xh;xih" "$<"
+
+.cpp.obj:
+	@echo " Compile::C++ Compiler "
+	icc.exe /Q /Ti /Gm /Gd /Ge- /G5 /Oi1024 /Gx /Ft- /C "$<"
+
+.RC.res:
+	@echo " Compile::Resource Compiler "
+	rc.exe -n -r "$<" "$@"
+
+all: pwhatrep.dll
+
+pwhatrep.dll: PWHATREP.obj PWHATREP.res {$(LIB)}somtk.lib pwhatrep.def
+	@echo " Link::Linker "
+	@echo " Bind::Resource Bind "
+    @echo " Misc::DLL with OS2OM30.DLL runtime and replace locked DLL in system directory"
+	icc.exe @<<
+ /Q /B" /de /dbgpack /br /exepack:2 /nobase /packc:0xFFFFFFFF /packd:0xFFFFFFFF /optfunc /noe /m"
+ /Fe$@
+somtk.lib 
+pwhatrep.def
+PWHATREP.obj
+<<
+	rc.exe -n -x2 PWHATREP.res "$@"
+ 	dllrname.exe "$@" CPPOM30=OS2OM30 /Q /N /R
+    emxupd.exe "$@" "$(COMSPEC:CMD.EXE=DLL)"
+
+PWHATREP.cpp: PWHATREP.IDL
+
+PWHATREP.obj: PWHATREP.cpp {.;$(INCLUDE);}pwhatrep.xih {.;$(INCLUDE);}rc.h
+
+PWHATREP.res: PWHATREP.RC {.;$(INCLUDE)}default.ico
+
